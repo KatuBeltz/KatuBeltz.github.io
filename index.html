@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 1</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    var config = {
+        type: Phaser.AUTO,
+        parent: 'phaser-example',
+        width: 350,
+        height: 520,
+        zoom: -2,
+        backgroundColor: '#fbf0e4',
+        scene: {
+            preload: preload,
+            create: create,
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    var head;
+
+    function preload ()
+    {
+        this.load.path = 'assets/';
+
+        this.load.image('open1', 'open1.png');
+        this.load.image('open2', 'open2.png');
+        this.load.image('closed', 'closed.png');
+        this.load.image('wink', 'wink.png');
+    }
+
+    function create ()
+    {
+        this.anims.create({
+            key: 'idle',
+            frames: [
+                { key: 'open1' },
+                { key: 'open1' },
+                { key: 'open2' },
+                { key: 'open2' },
+                { key: 'open2' },
+                { key: 'closed' },
+                { key: 'open1' },
+                { key: 'open1' },
+                { key: 'open2' },
+                { key: 'open2', duration: 400 }
+            ],
+            frameRate: 4,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'wink',
+            frames: [
+                { key: 'wink', duration: 800 }
+            ],
+            frameRate: 4,
+            repeat: 1
+        });
+
+        head = this.add.sprite(190, 260, 'open1').play('idle').setScale(0.4);
+        head.setInteractive().on('pointerdown', wink);
+        head.setInteractive().on('pointerup', unwink);
+        console.log('Hello');
+    }
+
+    function wink()
+    {
+        console.log('wink');
+        head.anims.play('wink');
+    }
+
+    function unwink()
+    {
+        console.log('unwink');
+        head.anims.play('idle');
+    }
+</script>
+
+</body>
+</html>
